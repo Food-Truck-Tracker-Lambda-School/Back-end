@@ -15,6 +15,7 @@ exports.up = function (knex) {
         .notNullable()
         .unique()
       tbl.integer('roleId')
+        .notNullable()
         .references('roles.id')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')

@@ -10,17 +10,24 @@ router.post('/login', async (req, res, next) => {
   if (!user) {
     res.status(404).json({ message: 'invalid username' })
   }
-  const { password } = req.body
-  try {
-    if (bcrypt.compareSync(password, req.password)) {
-      res.status(200).json(user)
+  else {
+    const { password } = req.body
+    if (password) {
+      try {
+        if (bcrypt.compareSync(password, req.password)) {
+          res.status(200).json(user)
+        }
+        else {
+          res.status(403).json({ message: 'invalid password' })
+        }
+      }
+      catch (err) {
+        next(err)
+      }
     }
     else {
-      res.status(403).json({ message: 'invalid password' })
+      res.status(400).json({ message: 'missing password' })
     }
-  }
-  catch (err) {
-    next(err)
   }
 })
 
@@ -42,17 +49,28 @@ router.post('/register', async (req, res, next) => {
 
 
 async function getUser(req, res, next) {
-  try {
-    const { password, ...user } = await db.getUserByUsername(user.username)
-    if (user) {
-      req.password = password
-      req.user = user
+  const { username } = req.body
+  if (username) {
+    try {
+      const result = await db.getUserByUsername(req.body.username)
+      if (!result)
+        next()
+      else {
+        const { password, ...user } = result
+        req.password = password
+        req.user = user
+        next()
+      }
+
     }
-    next()
+    catch (err) {
+      next(err)
+    }
   }
-  catch (err) {
-    next(err)
+  else {
+    res.status(400).json({ message: 'missing username' })
   }
+
 
 }
 

@@ -2,10 +2,13 @@ const db = require('../data/connection')
 const jwt = require('jsonwebtoken')
 
 async function getUserByUsername(username) {
-  const user = db('users')
+  const user = await db('users')
     .where({ username })
     .first()
-  return { ...user, token: generateToken(user) }
+  if (user)
+    return { ...user, token: generateToken(user) }
+  else
+    return null
 }
 
 async function registerUser(user) {
