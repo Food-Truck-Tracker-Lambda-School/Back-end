@@ -36,15 +36,21 @@ router.post('/register', async (req, res, next) => {
     res.status(400).json({ message: 'username already exists' })
   }
   const user = req.body
-  try {
-    const hashed = bcrypt.hashSync(user.password, 10)
-    user.password = hashed
-    const newUser = await db.registerUser(user)
-    res.status(201).json(newUser)
+  if (!user.username || !user.password || !user.roleId) {
+    res.status(400).json({ message: 'missing username, password, or roleId' })
   }
-  catch (err) {
-    next(err)
+  else {
+    try {
+      const hashed = bcrypt.hashSync(user.password, 10)
+      user.password = hashed
+      const { password, ...newUser } = await db.registerUser(user)
+      res.status(201).json(newUser)
+    }
+    catch (err) {
+      next(err)
+    }
   }
+
 })
 
 

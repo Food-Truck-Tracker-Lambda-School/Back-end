@@ -12,9 +12,13 @@ async function getUserByUsername(username) {
 }
 
 async function registerUser(user) {
-  const users = await db('users')
-    .insert(user)
-  return getUserByUsername(user.username)
+  try {
+    const users = await db('users')
+      .insert(user)
+    return getUserByUsername(user.username)
+  } catch (err) {
+    return err
+  }
 }
 
 function generateToken(user) {

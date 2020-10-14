@@ -4,7 +4,7 @@ exports.seed = function (knex) {
   // Deletes ALL existing entries
   return cleaner.clean(knex, {
     mode: 'truncate',
-    ignoreTables: ['migrations', 'migrations_lock']
+    ignoreTables: ['knex_migrations', 'knex_migrations_lock']
   })
     .then(function () {
     });
