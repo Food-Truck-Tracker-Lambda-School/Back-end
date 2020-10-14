@@ -3,17 +3,17 @@
 Deploy Link - https://foodtrucktrackers.herokuapp.com/
 
 
-#/api/auth
+# /api/auth
 
-##POST /login
-#####Required Body
+## POST /login
+##### Required Body
 ```
 {
   username,
   password
 }
 ```
-#####Returns
+##### Returns
 ```
 {
   id,
@@ -23,8 +23,8 @@ Deploy Link - https://foodtrucktrackers.herokuapp.com/
 }
 ```
 
-##POST /register
-#####Required Body
+## POST /register
+##### Required Body
 ```
 {
   username,
@@ -32,7 +32,7 @@ Deploy Link - https://foodtrucktrackers.herokuapp.com/
   roleId
 }
 ```
-#####Returns
+##### Returns
 ```
 {
   {
