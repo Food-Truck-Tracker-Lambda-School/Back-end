@@ -1,16 +1,30 @@
 
 exports.up = function (knex) {
-  return knex.schema.createTable('users', tbl => {
+  return knex.schema.createTable('roles', tbl => {
     tbl.increments('id')
-    tbl.text('username')
-      .notNullable()
+    tbl.text('name')
       .unique()
-    tbl.text('password')
       .notNullable()
-      .unique()
   })
+    .createTable('users', tbl => {
+      tbl.increments('id')
+      tbl.text('username')
+        .notNullable()
+        .unique()
+      tbl.text('password')
+        .notNullable()
+        .unique()
+      tbl.integer('roleId')
+        .notNullable()
+        .references('id')
+        .inTable('roles')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
+    })
 };
 
 exports.down = function (knex) {
   return knex.schema.dropTable('users')
+    .dropTable('roles')
+
 };
