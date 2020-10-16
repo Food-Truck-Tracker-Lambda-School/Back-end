@@ -4,8 +4,9 @@ const db = require('../data/connection')
 async function getDinerFavorites(id) {
   const favorites = await db('favorites AS f')
     .join('trucks as t', 't.id', 'f.truckId')
+    .join('photos as p', 't.photoId', 'p.id')
     .where({ 'f.userId': id })
-    .select('t.*')
+    .select('t.id', 't.name', 't.location', 't.departureTime', 't.cuisineId', 't.photoId', 'p.url as photoUrl')
   return favorites
 }
 
