@@ -40,15 +40,28 @@ async function getDinerRatings(id) {
 }
 
 async function getDinerPictures(id) {
-
+  const pictures = await db('photos')
+    .where({ userId: id })
+    .select('id', 'url')
+  return pictures
 }
 
 async function addNewFavorite(userId, truckId) {
-
+  const exists = await db('favorites')
+    .where({ userId, truckId })
+    .first()
+  if (exists) {
+    return null
+  }
+  const id = await db('favorites')
+    .insert({ truckId, userId })
+  return getDinerFavorites(userId)
 }
 
-async function removeFavorite(userId, favoriteId) {
-
+async function removeFavorite(userId, truckId) {
+  return await db('favorites')
+    .del()
+    .where({ userId, truckId })
 }
 
 module.exports = {
