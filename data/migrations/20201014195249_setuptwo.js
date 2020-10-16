@@ -2,7 +2,7 @@
 exports.up = function (knex) {
   return knex.schema.alterTable('users', tbl => {
     tbl.text('name')
-    tbl.integer('phonenumber')
+    tbl.text('phoneNumber')
     tbl.text('email')
       .notNullable()
       .defaultTo('noemail@foodtruck.tracker')
