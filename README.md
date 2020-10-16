@@ -4,6 +4,90 @@
 
 ---------------------------------------------
 
+## Server Info
+### Get Roles
+#### GET */api/roles*
+gets all roles available for a user
+##### Request
+```
+  Axios.get('https://foodtrucktrackers.herokuapp.com/api/roles')
+```
+##### Response
+```
+[
+  {
+    id: 1,
+    role: 'user'
+  },
+  {
+    id: 2,
+    role: 'owner'
+  }
+]
+```
+
+### Get Cuisines
+#### GET */api/cuisines*
+gets all roles available for a user
+##### Request
+```
+  Axios.get('https://foodtrucktrackers.herokuapp.com/api/cuisines')
+```
+##### Response
+```
+[
+  {
+    "id": 0,
+    "name": "other"
+  },
+  {
+    "id": 1,
+    "name": "african"
+  },
+  {
+    "id": 2,
+    "name": "american"
+  },
+  {
+    "id": 3,
+    "name": "asian"
+  },
+  {
+    "id": 4,
+    "name": "cuban"
+  },
+  {
+    "id": 5,
+    "name": "european"
+  },
+  {
+    "id": 6,
+    "name": "mexican"
+  },
+  {
+    "id": 7,
+    "name": "middle eastern"
+  },
+  {
+    "id": 8,
+    "name": "south american"
+  },
+  {
+    "id": 9,
+    "name": "bakery"
+  },
+  {
+    "id": 10,
+    "name": "breakfast"
+  },
+  {
+    "id": 11,
+    "name": "treats"
+  }
+]
+```
+
+
 ## Authentication Routes
 
 ### User Sign In
