@@ -2,6 +2,26 @@
 
 ### Base URL - https://foodtrucktrackers.herokuapp.com/
 
+- [Server Info](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#server-info)
+  - [Get Roles](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-roles)
+  - [Get Cuisines](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-cuisines)
+- [Authentication Routes](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#authentication-routes)
+  - [User Sign In](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#user-sign-in)
+  - [User Sign Up](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#user-sign-up)
+- [Truck Routes](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#truck-routes)
+  - [Get All Trucks](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-a-list-of-all-trucks)
+  - [Get All Trucks in Radius](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-all-trucks-within-radius)
+  - [Get truck with id](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-basic-information-for-a-specific-truck)
+  - [Get Truck Ratings](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-all-ratings-for-a-specific-truck)
+  - [Get Truck Menu](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-all-menu-items-for-a-specific-truck)
+- [Diner Routes](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#diner-routes)
+  - [Get Diner](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-all-of-a-diners-information)
+  - [Get Diner Favorites](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-a-diners-list-of-favorite-trucks)
+  - [Add Favorite](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#add-a-new-truck-to-a-users-favorite-list)
+  - [Remove Favorite](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#remove-a-truck-from-a-users-favorite-list)
+  - [Get Diner's Ratings](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-all-ratings-a-user-has-submitted)
+- [Operator Routes](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#operator-routes)
+
 ---------------------------------------------
 
 ## Server Info
