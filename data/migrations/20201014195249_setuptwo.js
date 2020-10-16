@@ -148,7 +148,7 @@ exports.up = function (knex) {
 exports.down = function (knex) {
   return knex.schema.dropTable('menuItemRatings')
     .dropTable('menuItems-photos')
-    .dropTable('trucks=menuItems')
+    .dropTable('trucks-menuItems')
     .dropTable('menuItems')
     .dropTable('truckRatings')
     .dropTable('favorites')
