@@ -77,6 +77,8 @@ exports.up = function (knex) {
         .inTable('users')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
+      tbl.integer('rating')
+        .notNullable()
     })
     .createTable('menuItems', tbl => {
       tbl.increments('id')
@@ -157,7 +159,7 @@ exports.down = function (knex) {
     .dropTable('cuisines')
     .alterTable('users', tbl => {
       tbl.dropColumn('name')
-      tbl.dropColumn('phonenumber')
+      tbl.dropColumn('phoneNumber')
       tbl.dropColumn('email')
     })
 };
