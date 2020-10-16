@@ -5,7 +5,6 @@ exports.up = function (knex) {
     tbl.integer('phonenumber')
     tbl.text('email')
       .notNullable()
-      .unique()
       .defaultTo('noemail@foodtruck.tracker')
   })
     .createTable('cuisines', tbl => {
