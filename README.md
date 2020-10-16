@@ -2,7 +2,7 @@
 
 ### Base URL - https://foodtrucktrackers.herokuapp.com/
 
-- [https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#server-info](Server Info)
+- (https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#server-info)[Server Info]
   - [https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-roles](Get Roles)
   - [](Get Cuisines)
 - [](Authentication Routes)
