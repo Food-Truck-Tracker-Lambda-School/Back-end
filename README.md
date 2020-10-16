@@ -2,6 +2,26 @@
 
 ### Base URL - https://foodtrucktrackers.herokuapp.com/
 
+- [https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#server-info](Server Info)
+  - [https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-roles](Get Roles)
+  - [](Get Cuisines)
+- [](Authentication Routes)
+  - [](User Sign In)
+  - [](User Sign Up)
+- [](Truck Routes)
+  - [](Get All Trucks)
+  - [](Get All Trucks in Radius)
+  - [](Get truck with id)
+  - [](Get Truck Ratings)
+  - [](Get Truck Menu)
+- [](Diner Routes)
+  - [](Get Diner)
+  - [](Get Diner Favorites)
+  - [](Add Favorite)
+  - [](Remove Favorite)
+  - [](Get Diner's Ratings)
+- [](Operator Routes)
+
 ---------------------------------------------
 
 ## Server Info
