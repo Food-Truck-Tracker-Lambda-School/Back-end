@@ -29,7 +29,10 @@ Deploy Link - https://foodtrucktrackers.herokuapp.com/
 {
   username,
   password,
-  roleId
+  roleId,
+  name,
+  phoneNumber,
+  email
 }
 ```
 ##### Returns
