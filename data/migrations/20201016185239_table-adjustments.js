@@ -5,6 +5,7 @@ exports.up = function (knex) {
     if (process.env.NODE_ENV === 'production') {
       tbl.dateTime('departureTime')
         .alter()
+
     }
     else {
       tbl.dropColumn('departureTime')
