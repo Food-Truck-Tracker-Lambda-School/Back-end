@@ -21,14 +21,14 @@
   - [Remove Favorite](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#remove-a-truck-from-a-users-favorite-list)
   - [Get Diner's Ratings](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-all-ratings-a-user-has-submitted)
 - [Operator Routes](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#operator-routes)
-  -[Get Operator's Trucks](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-operators-trucks)
-  -[Add New Truck](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#add-new-truck)
-  -[Get Specified Truck](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-specified-truck)
-  -[Edit Truck](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#edit-truck)
-  -[Remove Truck](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#remove-truck)
-  -[Get Truck's Menu](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-trucks-menu)
-  -[Add Item to Truck's Menu](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#add-item-to-trucks-menu)
-  -[Remove Item from Truck's Menu](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#remove-item-from-trucks-menu)
+  - [Get Operator's Trucks](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-operators-trucks)
+  - [Add New Truck](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#add-new-truck)
+  - [Get Specified Truck](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-specified-truck)
+  - [Edit Truck](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#edit-truck)
+  - [Remove Truck](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#remove-truck)
+  - [Get Truck's Menu](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-trucks-menu)
+  - [Add Item to Truck's Menu](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#add-item-to-trucks-menu)
+  - [Remove Item from Truck's Menu](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#remove-item-from-trucks-menu)
 
 
 ---------------------------------------------
