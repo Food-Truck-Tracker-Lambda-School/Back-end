@@ -476,4 +476,193 @@ Returns all information availible from diner route in a single object
 
 ## Operator Routes
 
-### *Not Implemented*
+### Get Operator's Trucks
+#### GET /api/operator/:id/trucks/
+
+##### Request
+```
+  Axios.get('https://foodtrucktrackers.herokuapp.com/api/operator/1/trucks')
+```
+##### Response
+```
+  [
+    {
+      "id": 1,
+      "name": "truck of today",
+      "userId": 1,
+      "location": "here",
+      "cuisineId": 0,
+      "photoId": 1,
+      "departureTime": null
+    },
+    {
+      "id": 3,
+      "name": "Truck of an Alternate Timeline",
+      "userId": 1,
+      "location": "another world",
+      "cuisineId": 9,
+      "photoId": 1,
+      "departureTime": null
+    }
+]
+```
+
+### Add New Truck
+#### POST /api/operator/:id/trucks/
+
+##### Request
+```
+  Axios.post('https://foodtrucktrackers.herokuapp.com/api/operator/1/trucks' , {
+    "name": "truck of today",
+    "userId": 1,
+    "location": "here",
+    "cuisineId": 0,
+    "photoId": 1,
+  })
+```
+##### Response
+```
+  {
+    "id": 1,
+    "name": "truck of today",
+    "userId": 1,
+    "location": "here",
+    "cuisineId": 0,
+    "photoId": 1,
+    "departureTime": null
+  }
+```
+
+### Get Specified Truck
+#### GET /api/operator/:id/trucks/:tId
+
+##### Request
+```
+  Axios.get('https://foodtrucktrackers.herokuapp.com/api/operator/1/trucks/1')
+```
+##### Response
+```
+  {
+    "id": 1,
+    "name": "truck of today",
+    "userId": 1,
+    "location": "here",
+    "cuisineId": 0,
+    "photoId": 1,
+    "departureTime": null
+  }
+```
+
+### Edit Truck
+#### PUT /api/operator/:id/trucks/:tId
+
+##### Request
+```
+  Axios.put('https://foodtrucktrackers.herokuapp.com/api/operator/1/trucks/1', {
+    "name": "truck of today",
+    "location": "here",
+    "cuisineId": 0,
+    "photoId": 1,
+    "departureTime": "10/17/2020 12:00:00PST"
+  })
+```
+##### Response
+```
+  {
+    "id": 1,
+    "name": "truck of today",
+    "userId": 1,
+    "location": "here",
+    "cuisineId": 0,
+    "photoId": 1,
+    "departureTime": "10/17/2020 12:00:00PST"
+}
+```
+
+### Remove Truck
+#### DELETE /api/operator/:id/trucks/:tId
+
+##### Request
+```
+  Axios.delete('https://foodtrucktrackers.herokuapp.com/api/operator/1/trucks/1')
+```
+##### Response
+```
+  204 - no response
+```
+
+### Get Truck's Menu
+#### GET /api/operator/:id/trucks/:tId/menu
+
+##### Request
+```
+  Axios.get('https://foodtrucktrackers.herokuapp.com/api/operator/1/trucks/1/menu')
+```
+##### Response
+```
+  [
+    {
+      "id": 1,
+      "name": "pizza",
+      "price": 12.99,
+      "description": "delicious"
+    },
+    {
+      "id": 4,
+      "name": "orange chicken",
+      "price": 15.99,
+      "description": "amazing"
+    },
+]
+```
+
+### Add Item to Truck's Menu
+#### POST /api/operator/:id/trucks/:tId/menu/
+
+##### Request
+```
+  Axios.post('https://foodtrucktrackers.herokuapp.com/api/operator/1/trucks/1/menu', {
+    {
+      "name": "french toast",
+      "price": 9.99,
+      "description": "toast covered in eggs and spices, fried in butter"
+    }
+  })
+```
+##### Response
+```
+  [
+    {
+      "id": 1,
+      "name": "pizza",
+      "price": 12.99,
+      "description": "delicious"
+    },
+    {
+      "id": 4,
+      "name": "orange chicken",
+      "price": 15.99,
+      "description": "amazing"
+    },
+    {
+      "id": 5,
+      "name": "french toast",
+      "price": 9.99,
+      "description": "toast covered in eggs and spices, fried in butter"
+    }
+]
+```
+
+### Remove item from Truck's menu
+#### DELETE /api/operator/:id/trucks/:tId/menu/:mId
+
+##### Request
+```
+  Axios.delete('https://foodtrucktrackers.herokuapp.com/api/operator/1/trucks/1/menu/1')
+```
+##### Response
+```
+  204 - no response
+```
+
+
