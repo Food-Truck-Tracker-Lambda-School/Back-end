@@ -5,6 +5,7 @@
 - [Server Info](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#server-info)
   - [Get Roles](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-roles)
   - [Get Cuisines](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-cuisines)
+  - [Get Menu Items](http://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-menu-items)
 - [Authentication Routes](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#authentication-routes)
   - [User Sign In](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#user-sign-in)
   - [User Sign Up](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#user-sign-up)
@@ -116,6 +117,38 @@ gets all roles available for a user
 ]
 ```
 
+### Get Menu Items
+#### GET */api/menuItems*
+Get a list of all menu items in the database
+##### Request
+```
+Axios.get('https://foodtrucktrackers.herokuapp.com/api/menuItems/')
+```
+##### Response
+```
+[
+  {
+    "id": 1,
+    "name": "pizza"
+  },
+  {
+    "id": 2,
+    "name": "tacos"
+  },
+  {
+    "id": 3,
+    "name": "nachos"
+  },
+  {
+    "id": 4,
+    "name": "orange chicken"
+  },
+  {
+    "id": 5,
+    "name": "french toast"
+  }
+]
+```
 
 ## Authentication Routes
 

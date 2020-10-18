@@ -39,6 +39,16 @@ server.get('/', (req, res) => {
   res.send('<h1>Welcome!</h1>')
 })
 
+server.get('/api/menuItems', async (req, res, next) => {
+  try {
+    const menuItems = await db.getMenuItems()
+    res.status(200).json(menuItems)
+
+  } catch (err) {
+    next(err)
+  }
+})
+
 server.use(error)
 
 

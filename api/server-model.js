@@ -16,8 +16,13 @@ async function getUser(id) {
     .first()
 }
 
+async function getMenuItems() {
+  return await db('menuItems')
+}
+
 module.exports = {
   getRoles,
   getCuisines,
-  getUser
+  getUser,
+  getMenuItems
 }
