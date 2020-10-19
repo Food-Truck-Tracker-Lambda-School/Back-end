@@ -4,6 +4,7 @@ const db = require('../data/connection')
 module.exports = function (err, req, res, next) {
   if (err) {
     try {
+      console.log(err)
       db.insert({
         errorDate: Date.now(),
         error: JSON.stringify(err)
