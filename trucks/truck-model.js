@@ -2,18 +2,30 @@ db = require('../data/connection')
 
 
 async function getTrucks() {
-  return await db('trucks')
+  let trucks = await db('trucks as t')
+    .join('photos as p', 't.photoId', 'p.id')
+    .select('t.id', 't.name', 't.location', 't.departureTime', 't.cuisineId', 't.photoId', 'p.url as photoUrl')
+  for (let i = 0; i < trucks.length; i++) {
 
+    const ratings = await db('truckRatings')
+      .where({ truckId: trucks[i].id })
+    trucks[i].ratings = ratings.map(rating => rating.rating)
+  }
+
+  return trucks
 }
 
 async function getTruckById(id) {
   console.log(Date.now())
-  return await db('trucks as t')
+  const truck = await db('trucks as t')
     .join('photos as p', 't.photoId', 'p.id')
     .where({ 't.id': id })
     .select('t.id', 't.name', 't.location', 't.departureTime', 't.cuisineId', 't.photoId', 'p.url as photoUrl')
     .first()
+  const ratings = await db('truckRatings')
+    .where({ id: truck.id })
 
+  truck.ratings = ratings
 }
 
 async function getTruckRatings(truckId) {
