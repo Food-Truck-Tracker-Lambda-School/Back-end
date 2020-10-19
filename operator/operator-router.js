@@ -25,7 +25,7 @@ router.post('/:id/trucks', async (req, res, next) => {
   if (!isEmpty(rest)) {
     res.status(400).json({ message: 'please only submit a truck with {name, location, cuisineId, photoId, [departureTime]}' })
   }
-  else if (name && location && cuisineId && photoId) {
+  else if (name && location && cuisineId > -1 && photoId) {
     try {
       const trucks = await db.addTruck({ ...req.body, userId: id })
       res.status(201).json(trucks)
