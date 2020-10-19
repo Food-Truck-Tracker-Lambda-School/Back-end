@@ -120,7 +120,6 @@ dist
 *.db3
 data/seeds/02-menuItems.js
 data/seeds/03-users.js
-data/seeds/05-photos.js
 data/seeds/06-trucks.js
 data/seeds/07-menuItemRatings.js
 data/seeds/08-truckRatings.js
