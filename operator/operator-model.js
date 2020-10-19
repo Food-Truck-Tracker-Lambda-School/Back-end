@@ -12,7 +12,7 @@ async function getTruck(id) {
 }
 async function getMenuItem(id) {
   return await db('menuItems')
-    .where({ id })
+    .where({ id: id })
     .first()
 }
 
@@ -24,7 +24,9 @@ async function getOperatorTrucks(userId) {
 async function addTruck(truck) {
   const id = await db('trucks')
     .insert(truck)
+    .returning('id')
 
+  console.log(id)
   return getTruck(id[0])
 }
 
