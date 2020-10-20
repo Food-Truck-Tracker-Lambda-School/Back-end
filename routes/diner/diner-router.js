@@ -1,9 +1,10 @@
 const router = require('express').Router()
 const db = require('./diner-model')
-const validateUser = require('../api/validateUser-middleware')
+const validateUser = require('../../api/validateUser-middleware')
+const idCheck = require('../../api/id-check-middleware-factory')
 
-router.use('/:id', require('../api/user-exists-middleware'))
-router.use(require('../api/restricted-middleware'))
+router.use('/:id', idCheck('id', 'user', 'users', 'id'))
+router.use(require('../../api/restricted-middleware'))
 
 
 router.get('/:id', async (req, res, next) => {

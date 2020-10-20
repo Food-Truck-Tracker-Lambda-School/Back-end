@@ -1,4 +1,4 @@
-db = require('../data/connection')
+db = require('../../data/connection')
 
 
 async function getTrucks() {
@@ -26,6 +26,7 @@ async function getTruckById(id) {
     .where({ id: truck.id })
 
   truck.ratings = ratings
+  return truck
 }
 
 async function getTruckRatings(truckId) {
@@ -55,9 +56,24 @@ async function getTruckMenu(id) {
   return menu
 }
 
+async function addTruckRating(rating) {
+  return await db('truckRatings')
+    .insert(rating)
+    .returning('id')
+
+}
+
+async function addMenuItemRating(rating) {
+  return await db('menuItemRatings')
+    .insert(rating)
+    .returning('rating')
+}
+
 module.exports = {
   getTrucks,
   getTruckById,
   getTruckRatings,
-  getTruckMenu
+  getTruckMenu,
+  addTruckRating,
+  addMenuItemRating
 }

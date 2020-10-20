@@ -1,4 +1,4 @@
-const db = require('../data/connection')
+const db = require('../../data/connection')
 
 async function getOperator(id) {
   return await db('users')

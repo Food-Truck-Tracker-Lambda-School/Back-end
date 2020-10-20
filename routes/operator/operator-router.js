@@ -3,11 +3,14 @@ const router = require('express').Router()
 const db = require('./operator-model')
 const menuItemDb = require('../menuItem/menuItem-model')
 
-router.use(require('../api/restricted-middleware'))
+const idCheck = require('../../api/id-check-middleware-factory')
+const validateUser = require('../../api/validateUser-middleware')
 
-router.use('/:id', userVerification)
-router.use('/:id/trucks/:tId', truckVerification)
-router.use('/:id/trucks/:tId/menu/:mId', menuItemVerification)
+router.use(require('../../api/restricted-middleware'))
+
+router.use('/:id', idCheck('id', 'user', 'users', 'id'))
+router.use('/:id/trucks/:tId', idCheck('tId', 'truck', 'trucks', 'id'))
+router.use('/:id/trucks/:tId/menu/:mId', idCheck('mId', 'menuItem', 'menuItems', 'id'))
 
 router.get('/:id/trucks', async (req, res, next) => {
   const { id } = req.params
@@ -19,9 +22,9 @@ router.get('/:id/trucks', async (req, res, next) => {
   }
 })
 
-router.post('/:id/trucks', async (req, res, next) => {
+router.post('/:id/trucks', validateUser, async (req, res, next) => {
   const { id } = req.params
-  const { name, location, cuisineId, photoId, departureTime, ...rest } = req.body
+  const { name, location, cuisineId, photoId = 1, departureTime, ...rest } = req.body
   if (!isEmpty(rest)) {
     res.status(400).json({ message: 'please only submit a truck with {name, location, cuisineId, photoId, [departureTime]}' })
   }
@@ -42,7 +45,7 @@ router.get('/:id/trucks/:tId', (req, res, next) => {
   res.status(200).json(req.truck)
 })
 
-router.put('/:id/trucks/:tId', async (req, res, next) => {
+router.put('/:id/trucks/:tId', validateUser, async (req, res, next) => {
   const { tId } = req.params
   const truck = { ...req.truck, ...req.body }
   const { name, location, cuisineId, photoId, departureTime, id, userId, ...rest } = truck
@@ -59,7 +62,7 @@ router.put('/:id/trucks/:tId', async (req, res, next) => {
   }
 })
 
-router.delete('/:id/trucks/:tId', async (req, res, next) => {
+router.delete('/:id/trucks/:tId', validateUser, async (req, res, next) => {
   const { tId } = req.params
   try {
     const count = await db.delTruck(tId)
@@ -85,7 +88,7 @@ router.get('/:id/trucks/:tId/menu', async (req, res, next) => {
   }
 })
 
-router.post('/:id/trucks/:tId/menu', async (req, res, next) => {
+router.post('/:id/trucks/:tId/menu', validateUser, async (req, res, next) => {
   const { tId } = req.params
   const menuItem = req.body
   try {
@@ -101,7 +104,7 @@ router.post('/:id/trucks/:tId/menu', async (req, res, next) => {
   }
 })
 
-router.delete('/:id/trucks/:tId/menu/:mId', async (req, res, next) => {
+router.delete('/:id/trucks/:tId/menu/:mId', validateUser, async (req, res, next) => {
   let { tId, mId } = req.params
   try {
     const count = await db.removeItemFromMenu(tId, mId)
@@ -115,48 +118,6 @@ router.delete('/:id/trucks/:tId/menu/:mId', async (req, res, next) => {
     next(err)
   }
 })
-
-async function userVerification(req, res, next) {
-  const { id } = req.params
-  let message = ' '
-  if (id) {
-    const operator = await db.getOperator(id)
-    if (!operator) {
-
-      res.status(404).json({ message: 'invalid [operatorId]' })
-    }
-    else {
-      req.operator = operator
-      next()
-    }
-  }
-}
-async function truckVerification(req, res, next) {
-  const { tId } = req.params
-  if (tId) {
-    const truck = await db.getTruck(tId)
-    if (!truck) {
-      res.status(404).json({ message: 'invalid [truckId]' })
-    }
-    else {
-      req.truck = truck
-      next()
-    }
-  }
-}
-async function menuItemVerification(req, res, next) {
-  const { mId } = req.params
-  if (mId) {
-    const menuItem = await db.getMenuItem(mId)
-    if (!menuItem) {
-      res.status(404).json({ message: 'invalid [menuItemId]' })
-    }
-    else {
-      req.menuItem = menuItem
-      next()
-    }
-  }
-}
 function isEmpty(obj) {
   for (var prop in obj) {
     if (obj.hasOwnProperty(prop))

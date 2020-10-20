@@ -1,4 +1,4 @@
-const db = require('../data/connection')
+const db = require('../../data/connection')
 const jwt = require('jsonwebtoken')
 
 async function getUserByUsername(username) {
