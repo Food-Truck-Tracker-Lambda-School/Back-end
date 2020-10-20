@@ -243,10 +243,33 @@ Retrieves a list of all trucks in the database and returns a json object contain
 Retrieves a list of all trucks in a given radius around a location
 ##### Request
 ```
-  Axios.get(`https://foodtrucktrackers.herokuapp.com/api/trucks?location=${location}&radius=${50}`)
+  Axios.get(`https://foodtrucktrackers.herokuapp.com/api/trucks?lattitude=${lattitude}&longitude=${longitude}&radius=${50}`)
 ```
-*not implemented*
-
+##### Response
+```
+[
+  {
+    "id": 1,
+    "name": "truck of today",
+    "location": "37.422161 -122.084267",     
+    "departureTime": "1602876339100",
+    "cuisineId": 0,
+    "photoId": 1,
+    "photoUrl": "http://www.google.com",
+    "distance": 30
+  },
+  {
+    "id": 2,
+    "name": "truck of tomorrow",
+    "location": "47.639881 -122.124382",     
+    "departureTime": "1602876339100",
+    "cuisineId": 4,
+    "photoId": 2,
+    "photoUrl": "http://www.microsoft.com",
+    "distance": 25.5
+  }
+]
+```
 
 ### Get basic information for a specific truck
 #### GET /api/trucks/:id
