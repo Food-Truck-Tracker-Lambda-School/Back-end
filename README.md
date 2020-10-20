@@ -16,6 +16,7 @@
   - [Get Truck Ratings](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-all-ratings-for-a-specific-truck)
   - [Add New Rating To Truck](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#add-a-new-rating-for-a-truck)
   - [Get Truck Menu](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-all-menu-items-for-a-specific-truck)
+  - [Add Review to Menu Item](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#add-review-to-menu-item)
 - [Diner Routes](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#diner-routes)
   - [Get Diner](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-all-of-a-diners-information)
   - [Get Diner Favorites](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-a-diners-list-of-favorite-trucks)
@@ -334,6 +335,24 @@ Retrieves a list of all menu items for a specified truck, and returns a JSON obj
 ]
 ```
 
+### Add Review to Menu Item
+#### POST /api/trucks/:id/menu/:mId
+##### Request
+```
+  Axios.post('https://foodtrucktrackers.herokuapp.com/api/trucks/1/menu/1', {
+    userId: 1,
+    rating: 5
+  })
+```
+##### Response
+```
+  {
+    truckId: 1,
+    menuItemId: 1,
+    rating: 4,
+    userId: 1
+  }
+```
 
 ## Diner Routes
 ### Get all of a diner's information
