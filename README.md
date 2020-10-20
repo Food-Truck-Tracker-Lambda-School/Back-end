@@ -14,6 +14,7 @@
   - [Get All Trucks in Radius](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-all-trucks-within-radius)
   - [Get truck with id](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-basic-information-for-a-specific-truck)
   - [Get Truck Ratings](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-all-ratings-for-a-specific-truck)
+  - [Add New Rating To Truck](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#add-a-new-rating-for-a-truck)
   - [Get Truck Menu](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-all-menu-items-for-a-specific-truck)
 - [Diner Routes](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#diner-routes)
   - [Get Diner](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-all-of-a-diners-information)
@@ -30,6 +31,8 @@
   - [Get Truck's Menu](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#get-trucks-menu)
   - [Add Item to Truck's Menu](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#add-item-to-trucks-menu)
   - [Remove Item from Truck's Menu](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#remove-item-from-trucks-menu)
+- [Photo Routes](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#photo-routes)
+  - [Add A New Photo](https://github.com/Food-Truck-Tracker-Lambda-School/Back-end#add-a-new-photo)
 
 
 ---------------------------------------------
@@ -243,6 +246,7 @@ Retrieves a list of all trucks in a given radius around a location
 ```
 *not implemented*
 
+
 ### Get basic information for a specific truck
 #### GET /api/trucks/:id
 Retrieves all the base information for the specified truck and returns a JSON object
@@ -279,6 +283,24 @@ Retrieves all ratings for a truck and returns a JSON object containing an array 
   5,
   1
 ]
+```
+
+### Add a new rating for a truck
+#### POST /api/trucks/:id/ratings
+##### Request
+```
+  Axios.post('https://foodtrucktrackers.herokuapp.com/api/trucks/1/ratings', {
+    userId: 1,
+    rating: 5
+  })
+```
+##### Response
+```
+  {
+    id: 5,
+    rating: 5,
+    truckId: 1
+  }
 ```
 
 ### Get all menu items for a specific truck
@@ -704,5 +726,22 @@ Returns all information availible from diner route in a single object
 ```
   204 - no response
 ```
+## Photo Routes
 
-
+### Add A New Photo
+#### POST /api/photos/
+##### Request
+```
+  Axios.post('https://foodtrucktrackers.herokuapp.com/api/photos', {
+    file: require('../images/truckimg.jpg'),
+    userId: 1
+  })
+```
+##### Response
+```
+  {
+    id: 5,
+    url: 'http://cloudinary.com/v1/url/sdkjhjdhsiuy.jpg',
+    userId: 1
+  }
+```

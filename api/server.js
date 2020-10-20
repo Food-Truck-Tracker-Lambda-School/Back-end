@@ -12,10 +12,11 @@ server.use(express.json())
 server.use(helmet())
 server.use(cors())
 
-server.use('/api/auth', require('../auth/auth-router'))
-server.use('/api/diner', require('../diner/diner-router'))
-server.use('/api/operator', require('../operator/operator-router'))
-server.use('/api/trucks', require('../trucks/truck-router'))
+server.use('/api/auth', require('../routes/auth/auth-router'))
+server.use('/api/diner', require('../routes/diner/diner-router'))
+server.use('/api/operator', require('../routes/operator/operator-router'))
+server.use('/api/trucks', require('../routes/trucks/truck-router'))
+server.use('/api/photos', require('../routes/photos/photo-router'))
 
 server.get('/api/roles', async (req, res, next) => {
   try {

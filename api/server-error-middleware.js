@@ -4,10 +4,9 @@ const db = require('../data/connection')
 module.exports = async function (err, req, res, next) {
   if (err) {
     try {
-      console.log(err)
-      await db.insert({
-        errorDate: Date.now(),
-        error: JSON.stringify(err)
+      await db('errors').insert({
+        errorDate: new Date(Date.now()).toISOString(),
+        error: err.message
       })
     } catch (error) {
       console.log(error)

@@ -1,4 +1,4 @@
-const db = require('../data/connection')
+const db = require('../../data/connection')
 
 async function getMenuItem(id) {
   return await db('menuItems')
