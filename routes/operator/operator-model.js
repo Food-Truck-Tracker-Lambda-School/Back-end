@@ -6,9 +6,11 @@ async function getOperator(id) {
     .first()
 }
 async function getTruck(id) {
-  return await db('trucks')
+  const truck = await db('trucks')
     .where({ id })
     .first()
+  truck.ratings = await db('truckRatings')
+    .where({ truckId: id })
 }
 async function getMenuItem(id) {
   return await db('menuItems')

@@ -123,3 +123,4 @@ data/seeds/03-users.js
 data/seeds/06-trucks.js
 data/seeds/07-menuItemRatings.js
 data/seeds/08-truckRatings.js
+jest.config.js

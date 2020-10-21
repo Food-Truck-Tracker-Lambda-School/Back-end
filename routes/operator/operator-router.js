@@ -12,6 +12,11 @@ router.use('/:id', idCheck('id', 'user', 'users', 'id'))
 router.use('/:id/trucks/:tId', idCheck('tId', 'truck', 'trucks', 'id'))
 router.use('/:id/trucks/:tId/menu/:mId', idCheck('mId', 'menuItem', 'menuItems', 'id'))
 
+router.get('/:id', async (req, res, next) => {
+  const { password, ...operator } = req.user
+  res.status(200).json(operator)
+})
+
 router.get('/:id/trucks', async (req, res, next) => {
   const { id } = req.params
   try {
@@ -42,7 +47,12 @@ router.post('/:id/trucks', validateUser, async (req, res, next) => {
 })
 
 router.get('/:id/trucks/:tId', (req, res, next) => {
-  res.status(200).json(req.truck)
+  if (truck.userId === req.params.id) {
+    res.status(200).json(req.truck)
+  }
+  else {
+    res.status(404).json({ message: `no truck found for user ${req.params.id} with that id` })
+  }
 })
 
 router.put('/:id/trucks/:tId', validateUser, async (req, res, next) => {

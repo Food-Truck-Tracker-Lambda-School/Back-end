@@ -39,6 +39,9 @@ router.post('/register', async (req, res, next) => {
   if (!user.username || !user.password || !user.roleId) {
     res.status(400).json({ message: 'missing username, password, or roleId' })
   }
+  else if (user.roleId < 1 || user.roleId > 2) {
+    res.status(400).json({ message: 'invalid roleId' })
+  }
   else {
     try {
       const hashed = bcrypt.hashSync(user.password, 10)

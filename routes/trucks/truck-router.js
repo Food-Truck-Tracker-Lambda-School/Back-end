@@ -2,21 +2,49 @@ const router = require('express').Router()
 
 const db = require('./truck-model')
 const idCheck = require('../../api/id-check-middleware-factory')
+const geolib = require('geolib')
 
 router.use(require('../../api/restricted-middleware'))
 router.use('/:id', idCheck('id', 'truck', 'trucks', 'id'))
 router.use('/:id/menu/:mId', idCheck('id', 'menuItem', 'menuItems', 'id'))
 
+
+
 router.get('/', async (req, res, next) => {
   const trucks = await db.getTrucks()
-  res.status(200).json(trucks)
+  let { lattitude, longitude, radius = 50 } = req.query
+  lattitude = parseFloat(lattitude)
+  longitude = parseFloat(longitude)
+  if (lattitude && longitude) {
+    const closeTrucks = []
+    trucks.forEach(truck => {
+      const truckLoc = truck.location.split(' ')
+      if (truckLoc[1]) {
+        const distance = geolib.getDistance(
+          { lattitude, longitude },
+          { lattitude: truckLoc[0], longitude: truckLoc[1] }
+        ) * .000621371192
+        if (distance < radius) {
+          closeTrucks.push({ ...truck, distance })
+        }
+      }
+
+    });
+    res.status(200).json(closeTrucks)
+  } else {
+    res.status(200).json(trucks)
+  }
 })
 
 router.get('/:id', async (req, res, next) => {
   const { id } = req.params
   try {
     const truck = await db.getTruckById(id)
+
+
     res.status(200).json(truck)
+
+
   } catch (err) {
     next(err)
   }
