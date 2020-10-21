@@ -12,18 +12,23 @@ router.use('/:id/menu/:mId', idCheck('id', 'menuItem', 'menuItems', 'id'))
 
 router.get('/', async (req, res, next) => {
   const trucks = await db.getTrucks()
-  const { lattitude, longitude, radius = 50 } = req.query
+  let { lattitude, longitude, radius = 50 } = req.query
+  lattitude = parseFloat(lattitude)
+  longitude = parseFloat(longitude)
   if (lattitude && longitude) {
     const closeTrucks = []
     trucks.forEach(truck => {
       const truckLoc = truck.location.split(' ')
-      const distance = geolib.getDistance(
-        { lattitude, longitude },
-        { lattitude: truckLoc[0], longitude: truckLoc[1] }
-      ) * .000621371192
-      if (distance < radius) {
-        closeTrucks.push({ ...truck, distance })
+      if (truckLoc[1]) {
+        const distance = geolib.getDistance(
+          { lattitude, longitude },
+          { lattitude: truckLoc[0], longitude: truckLoc[1] }
+        ) * .000621371192
+        if (distance < radius) {
+          closeTrucks.push({ ...truck, distance })
+        }
       }
+
     });
     res.status(200).json(closeTrucks)
   } else {

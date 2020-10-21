@@ -20,10 +20,11 @@
   },
   "devDependencies": {
     "jest": "^26.5.3",
-    "nodemon": "^2.0.5"
+    "nodemon": "^2.0.5",
+    "supertest": "^5.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cross-env NODE_ENV=testing jest --watch --verbose",
     "server": "nodemon index.js",
     "start": "node index.js"
   },
