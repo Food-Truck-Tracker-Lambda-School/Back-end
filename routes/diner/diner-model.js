@@ -6,7 +6,7 @@ async function getDinerFavorites(id) {
     .join('trucks as t', 't.id', 'f.truckId')
     .join('photos as p', 't.photoId', 'p.id')
     .where({ 'f.userId': id })
-    .select('t.id', 't.name', 't.location', 't.departureTime', 't.cuisineId', 't.photoId', 'p.url as photoUrl')
+  //.select('t.id', 't.name', 't.location', 't.departureTime', 't.cuisineId', 't.photoId', 'p.url as photoUrl')
   return favorites
 }
 
@@ -46,6 +46,12 @@ async function getDinerPictures(id) {
   return pictures
 }
 
+async function getTruck(id) {
+  return await db('trucks')
+    .where({ id })
+    .first()
+}
+
 async function addNewFavorite(userId, truckId) {
   const exists = await db('favorites')
     .where({ userId, truckId })
@@ -65,6 +71,7 @@ async function removeFavorite(userId, truckId) {
 }
 
 module.exports = {
+  getTruck,
   getDinerFavorites,
   getDinerPictures,
   getDinerRatings,

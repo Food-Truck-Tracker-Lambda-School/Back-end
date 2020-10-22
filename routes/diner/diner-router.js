@@ -3,8 +3,9 @@ const db = require('./diner-model')
 const validateUser = require('../../api/validateUser-middleware')
 const idCheck = require('../../api/id-check-middleware-factory')
 
-router.use('/:id', idCheck('id', 'user', 'users', 'id'))
 router.use(require('../../api/restricted-middleware'))
+router.use('/:id', idCheck('id', 'user', 'users', 'id'))
+
 
 
 router.get('/:id', async (req, res, next) => {
@@ -39,19 +40,29 @@ router.post('/:id/favorites', validateUser, async (req, res, next) => {
   const { truckId } = req.body
   const { id } = req.params
   if (!truckId) {
-    res.status(404).json({ message: 'truck not found with that id' })
+    res.status(400).json({ message: 'please provide a valid truck id' })
   }
-  try {
-    const favorites = await db.addNewFavorite(id, truckId)
-    if (favorites) {
-      res.status(201).json(favorites)
+  else {
+    try {
+      const truck = await db.getTruck(truckId)
+      if (!truck) {
+        res.status(404).json({ message: 'truck id not found' })
+      }
+      else {
+        const favorites = await db.addNewFavorite(id, truckId)
+        if (favorites) {
+          res.status(201).json(favorites)
+        }
+        else {
+          res.status(400).json({ message: 'truck already exists in user\'s favorites' })
+        }
+      }
+
+    } catch (err) {
+      next(err)
     }
-    else {
-      res.status(400).json({ message: 'truck already exists in user\'s favorites' })
-    }
-  } catch (err) {
-    next(err)
   }
+
 })
 
 router.delete('/:id/favorites/:fId', validateUser, async (req, res, next) => {
