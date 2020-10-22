@@ -224,7 +224,10 @@ Retrieves a list of all trucks in the database and returns a json object contain
     "departureTime": "1602876339100",
     "cuisineId": 0,
     "photoId": 1,
-    "photoUrl": "http://www.google.com"
+    "photoUrl": "http://www.google.com",
+    "ratings": [
+      5,4,2
+    ]
   },
   {
     "id": 2,
@@ -233,7 +236,10 @@ Retrieves a list of all trucks in the database and returns a json object contain
     "departureTime": "1602876339100",
     "cuisineId": 4,
     "photoId": 2,
-    "photoUrl": "http://www.microsoft.com"
+    "photoUrl": "http://www.microsoft.com",
+    "ratings": [
+      5,4,2
+    ]
   }
 ]
 ```
@@ -256,7 +262,10 @@ Retrieves a list of all trucks in a given radius around a location
     "cuisineId": 0,
     "photoId": 1,
     "photoUrl": "http://www.google.com",
-    "distance": 30
+    "distance": 30,
+    "ratings": [
+      5,4,2
+    ]
   },
   {
     "id": 2,
@@ -266,7 +275,10 @@ Retrieves a list of all trucks in a given radius around a location
     "cuisineId": 4,
     "photoId": 2,
     "photoUrl": "http://www.microsoft.com",
-    "distance": 25.5
+    "distance": 25.5,
+    "ratings": [
+      5,4,2
+    ]
   }
 ]
 ```
@@ -287,7 +299,10 @@ Retrieves all the base information for the specified truck and returns a JSON ob
   "departureTime": "1602876339100",
   "cuisineId": 0,
   "photoId": 1,
-  "photoUrl": "http://www.google.com"
+  "photoUrl": "http://www.google.com",
+  "ratings": [
+      5,4,2
+    ]
 }
 ```
 
@@ -599,7 +614,10 @@ Returns all information availible from diner route in a single object
       "location": "here",
       "cuisineId": 0,
       "photoId": 1,
-      "departureTime": null
+      "departureTime": null,
+      "ratings" : [
+        5,4,2
+      ]
     },
     {
       "id": 3,
@@ -608,7 +626,10 @@ Returns all information availible from diner route in a single object
       "location": "another world",
       "cuisineId": 9,
       "photoId": 1,
-      "departureTime": null
+      "departureTime": null,
+      "ratings" : [
+        5,4,2
+      ]
     }
 ]
 ```
@@ -655,7 +676,10 @@ Returns all information availible from diner route in a single object
     "location": "here",
     "cuisineId": 0,
     "photoId": 1,
-    "departureTime": null
+    "departureTime": null,
+    "ratings" : [
+        5,4,2
+      ]
   }
 ```
 

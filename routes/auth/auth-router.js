@@ -18,7 +18,7 @@ router.post('/login', async (req, res, next) => {
           res.status(200).json(user)
         }
         else {
-          res.status(403).json({ message: 'invalid password' })
+          res.status(400).json({ message: 'invalid password' })
         }
       }
       catch (err) {
@@ -35,23 +35,26 @@ router.post('/register', async (req, res, next) => {
   if (req.user) {
     res.status(400).json({ message: 'username already exists' })
   }
-  const user = req.body
-  if (!user.username || !user.password || !user.roleId) {
-    res.status(400).json({ message: 'missing username, password, or roleId' })
-  }
-  else if (user.roleId < 1 || user.roleId > 2) {
-    res.status(400).json({ message: 'invalid roleId' })
-  }
   else {
-    try {
-      const hashed = bcrypt.hashSync(user.password, 10)
-      user.password = hashed
-      const { password, ...newUser } = await db.registerUser(user)
-      res.status(201).json(newUser)
+    const user = req.body
+    if (!user.username || !user.password || !user.roleId) {
+      res.status(400).json({ message: 'missing username, password, or roleId' })
     }
-    catch (err) {
-      next(err)
+    else if (user.roleId < 1 || user.roleId > 2) {
+      res.status(400).json({ message: 'invalid roleId' })
     }
+    else {
+      try {
+        const hashed = bcrypt.hashSync(user.password, 10)
+        user.password = hashed
+        const { password, ...newUser } = await db.registerUser(user)
+        res.status(201).json(newUser)
+      }
+      catch (err) {
+        next(err)
+      }
+    }
+
   }
 
 })

@@ -24,7 +24,7 @@
     "supertest": "^5.0.0"
   },
   "scripts": {
-    "test": "cross-env NODE_ENV=testing jest --watch --verbose",
+    "test": "cross-env NODE_ENV=testing jest --watch --verbose --detectOpenHandles",
     "server": "nodemon index.js",
     "start": "node index.js"
   },
