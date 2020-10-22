@@ -13,6 +13,7 @@ async function getMenuItemByName(name) {
 async function addNewMenuItem(menuItem) {
   const index = await db('menuItems')
     .insert(menuItem)
+    .returning('id')
   return await getMenuItem(index[0])
 }
 
