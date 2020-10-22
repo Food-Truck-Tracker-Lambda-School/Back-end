@@ -64,7 +64,7 @@ router.get('/:id/ratings', async (req, res, next) => {
 router.post('/:id/ratings', async (req, res, next) => {
   const { id } = req.params
   const { rating, userId, ...rest } = req.body
-
+  console.log(rating, userId, id)
   try {
     if (rating && userId) {
       const index = await db.addTruckRating({ truckId: id, userId, rating })
