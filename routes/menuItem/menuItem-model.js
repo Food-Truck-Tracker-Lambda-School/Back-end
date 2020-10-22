@@ -5,6 +5,11 @@ async function getMenuItem(id) {
     .where({ id })
     .first()
 }
+async function getMenuItemByName(name) {
+  return await db('menuItems')
+    .where({ name })
+    .first()
+}
 async function addNewMenuItem(menuItem) {
   const index = await db('menuItems')
     .insert(menuItem)
@@ -21,5 +26,6 @@ function isEmpty(obj) {
 
 module.exports = {
   getMenuItem,
-  addNewMenuItem
+  addNewMenuItem,
+  getMenuItemByName
 }
