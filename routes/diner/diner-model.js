@@ -11,7 +11,7 @@ async function getDinerFavorites(id) {
 }
 
 async function getDinerRatings(id) {
-  let truckRatings = await db('truckRatings as r')
+  let truckRatings = await db('truck_ratings as r')
     .join('trucks as t', 't.id', 'r.truckId')
     .where({ 'r.userId': id })
     .select('t.id as id', 't.name', 'r.rating')
