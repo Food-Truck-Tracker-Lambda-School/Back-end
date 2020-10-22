@@ -101,12 +101,15 @@ router.get('/:id/trucks/:tId/menu', async (req, res, next) => {
 router.post('/:id/trucks/:tId/menu', validateUser, async (req, res, next) => {
   const { tId } = req.params
   const menuItem = req.body
+  console.log("menuItem:", menuItem)
   try {
     if (!menuItem.id) {
       const exists = await menuItemDb.getMenuItemByName(menuItem.name)
+      console.log("exists: ", exists)
       if (!exists) {
         const newMenuItem = await menuItemDb.addNewMenuItem({ name: menuItem.name })
         menuItem.id = newMenuItem.id
+        console.log("newMenuItem: ", newMenuItem)
       }
       else {
         menuItem.id = exists.id
