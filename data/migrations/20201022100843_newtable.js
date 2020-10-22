@@ -1,6 +1,6 @@
 
 exports.up = function (knex) {
-  return knex.schema.createTable('trucks-ratings', tbl => {
+  return knex.schema.createTable('trucks_ratings', tbl => {
     tbl.integer('truckId')
       .notNullable()
       .references('id')
@@ -22,5 +22,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTable('trucks-ratings')
+  return knex.schema.dropTable('trucks_ratings')
 };
