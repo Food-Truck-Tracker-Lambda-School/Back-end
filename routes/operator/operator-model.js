@@ -22,7 +22,7 @@ async function getOperatorTrucks(userId) {
 
   for (let i = 0; i < trucks.length; i++) {
     const ratings = await db('trucks_ratings')
-      .where({ id: trucks[i].id })
+      .where({ truckId: trucks[i].id })
     trucks[i].ratings = ratings.map(r => r.rating)
   }
 
