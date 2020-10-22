@@ -57,6 +57,7 @@ async function getTruckMenu(id) {
 }
 
 async function addTruckRating(rating) {
+  console.log(rating)
   return await db('truckRatings')
     .insert(rating)
     .returning('id')
