@@ -2,6 +2,17 @@ const request = require('supertest')
 const server = require('./server')
 const db = require('../data/connection')
 let token
+const truck = {
+  id: 1,
+  name: 'Gerard\s Paella',
+  userId: 1,
+  location: '37.780454 -122.310074',
+  cuisineId: 5,
+  photoId: 1
+}
+const user = {
+  username: "merry"
+}
 
 const path = require('path')
 const photo = path.join(__dirname, '../routes/photos/testImg.jpg')
@@ -131,14 +142,7 @@ describe('server', () => {
           await db('favorites')
             .truncate()
           await db('trucks')
-            .insert({
-              id: 1,
-              name: 'Gerard\s Paella',
-              userId: 1,
-              location: '37.780454 -122.310074',
-              cuisineId: 5,
-              photoId: 1
-            })
+            .insert(truck)
           await db('favorites')
             .insert({
               truckId: 1,
@@ -167,72 +171,222 @@ describe('server', () => {
             done()
           });
           it('should respond with a 400 when the truck already exists in the user\'s favorites', async (done) => {
+
+            const { status } = await request(server)
+              .post('/api/diner/1/favorites')
+              .send({
+                truckId: 1
+              })
+              .set(token)
+            expect(status).toBe(400)
             done()
           });
           it('should respond with a list of all the user\'s favorites when given a valid truck', async (done) => {
+            await db('trucks')
+              .insert({
+                id: 2,
+                name: 'Gerard\s Paella',
+                userId: 1,
+                location: '37.780454 -122.310074',
+                cuisineId: 5,
+                photoId: 1
+              })
+            const { body } = await request(server)
+              .post('/api/diner/1/favorites')
+              .send({
+                truckId: 2
+              })
+              .set(token)
+
+            expect(body).toHaveLength(2)
             done()
           });
         });
         describe('/:fid', () => {
           it('should respond with a 404 if truck is not in user\'s favorites', async (done) => {
+            const { status } = await request(server)
+              .del('/api/diner/1/favorites/4')
+              .set(token)
+            expect(status).toBe(404)
             done()
           });
           it('should respond with a 204 when successfully removing favorite', async (done) => {
+            const { status } = await request(server)
+              .del('/api/diner/1/favorites/1')
+              .set(token)
+            expect(status).toBe(204)
             done()
           });
         });
       });
       describe('/:id/photos', () => {
+        beforeAll(async done => {
+          await db('photos').truncate()
+          for (let i = 0; i < 5; i++) {
+            await db('photos')
+              .insert({
+                userId: 1,
+                url: i
+              })
+          }
+          done()
+        })
         it('should return an array of photos', async (done) => {
+          const { body } = await request(server)
+            .get('/api/diner/1/photos')
+            .set(token)
+          expect(body).toHaveLength(5)
           done()
         });
       });
       describe('/:id/ratings', () => {
+        beforeAll(async done => {
+          await db('trucks')
+            .truncate()
+          await db('trucks_ratings')
+            .truncate()
+          await db('trucks')
+            .insert(truck)
+          await db('trucks_ratings')
+            .insert({
+              truckId: 1,
+              userId: 1,
+              rating: 5
+            })
+          done()
+        })
         it('should return an array of ratings', async (done) => {
+
+          const { body } = await request(server)
+            .get('/api/diner/1/ratings')
+            .set(token)
+          expect(body).toHaveLength(1)
           done()
         });
       });
     });
-
-
-
   });
 
   describe('operator router', () => {
     it('should reject any call without an authorization header', async (done) => {
+      const { status } = await request(server)
+        .get('/api/operator/1')
+
+      expect(status).toBe(403)
       done()
     });
     describe('/:id', () => {
-
+      beforeAll(async done => {
+        await db('users').truncate()
+        const diner = await request(server)
+          .post('/api/auth/register')
+          .send({
+            username: 'merry',
+            password: 'pippen',
+            roleId: 1
+          })
+        token = { Authorization: `bearer ${diner.body.token}` }
+        done()
+      })
       describe('/:id/trucks', () => {
         it('should respond with a 404 if given an invalid userId', async (done) => {
+          const { status } = await request(server)
+            .get('/api/operator/2/trucks')
+            .set(token)
+
+          expect(status).toBe(404)
           done()
         });
         describe('GET', () => {
+          beforeAll(async done => {
+            await db('trucks')
+              .truncate()
+            await db('trucks')
+              .insert(truck)
+            done()
+          })
           it('should provide a list of trucks when given a valid userID', async (done) => {
+            const { body } = await request(server)
+              .get('/api/operator/1/trucks')
+              .set(token)
+            expect(body).toHaveLength(1)
             done()
           });
         });
         describe('POST', () => {
+          beforeAll(async done => {
+            await db('trucks')
+              .truncate()
+            done()
+          })
           it('should respond with a 400 if given anything unexpected', async (done) => {
+            const { status } = await request(server)
+              .post('/api/operator/1/trucks')
+              .set(token)
+              .send({
+                ...truck,
+                other: 'hello'
+              })
+            expect(status).toBe(400)
             done()
           });
           it('should respond with a 400 if missing any required fields', async (done) => {
+            const { status } = await request(server)
+              .post('/api/operator/1/trucks')
+              .set(token)
+              .send({
+                name: "truck of errors"
+              })
+            expect(status).toBe(400)
             done()
           });
           it('should respond with a 201 and a list of all operator\'s trucks when given valid information', async (done) => {
+            const { body } = await request(server)
+              .post('/api/operator/1/trucks')
+              .set(token)
+              .send({
+                name: 'Gerard\s Paella',
+                location: '37.780454 -122.310074',
+                cuisineId: 5,
+                photoId: 1
+              })
+
+            expect(body).toHaveLength(1)
             done()
           });
         });
         describe('/:tId', () => {
-          it('should respond with a 404 if given an invalid truckId', async (done) => {
-            done()
-          });
           describe('GET', () => {
+            it('should respond with a 404 if given an invalid truckId', async (done) => {
+              const { status } = await request(server)
+                .get('/api/operator/1/trucks/2')
+                .set(token)
+
+              expect(status).toBe(404)
+              done()
+            });
             it('should respond with a trucks info when given a valid user and truck id', async (done) => {
+              const { body } = await request(server)
+                .get('/api/operator/1/trucks/1')
+                .set(token)
+              expect(body).toBeTruthy()
               done()
             });
             it('should respond with a 404 if truckId does not belong to user', async (done) => {
+              await db('users')
+                .insert({
+                  username: 'gandalf',
+                  password: 'the white',
+                  roleId: 2
+                })
+              await db('trucks')
+                .insert({ ...truck, id: 2, userId: 2 })
+
+              const { status } = await request(server)
+                .get('/api/operator/1/trucks/2')
+                .set(token)
+
+              expect(status).toBe(404)
               done()
             });
           });

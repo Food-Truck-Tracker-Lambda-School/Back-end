@@ -43,6 +43,7 @@ async function getTruckMenu(id) {
     .where({ 'r.truckId': id })
     .select('i.id', 'i.name', 'r.price', 'r.description')
   for (let i = 0; i < menu.length; i++) {
+    menu[i].price = parseFloat(menu[i].price)
     menu[i].photos = await db('menuItems-photos as r')
       .join('photos as p', 'r.photoId', 'p.id')
       .select('p.id as id', 'p.url')
