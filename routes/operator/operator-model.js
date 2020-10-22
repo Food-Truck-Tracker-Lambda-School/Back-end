@@ -6,12 +6,9 @@ async function getOperator(id) {
     .first()
 }
 async function getTruck(id) {
-  const truck = await db('trucks')
+  return await db('trucks')
     .where({ id })
     .first()
-  const ratings = await db('truck_ratings')
-    .where({ truckId: id })
-  truck.ratings = await ratings.map(r => r.rating)
 }
 async function getMenuItem(id) {
   return await db('menuItems')
@@ -24,7 +21,7 @@ async function getOperatorTrucks(userId) {
     .where({ userId })
 
   for (let i = 0; i < trucks.length; i++) {
-    const ratings = await db('truck_ratings')
+    const ratings = await db('trucks_ratings')
       .where({ id: trucks[i].id })
     trucks[i].ratings = ratings.map(r => r.rating)
   }

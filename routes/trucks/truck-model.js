@@ -7,7 +7,7 @@ async function getTrucks() {
     .select('t.id', 't.name', 't.location', 't.departureTime', 't.cuisineId', 't.photoId', 'p.url as photoUrl')
   for (let i = 0; i < trucks.length; i++) {
 
-    const ratings = await db('truck_ratings')
+    const ratings = await db('trucks_ratings')
       .where({ truckId: trucks[i].id })
     trucks[i].ratings = ratings.map(rating => rating.rating)
   }
@@ -22,7 +22,7 @@ async function getTruckById(id) {
     .where({ 't.id': id })
     .select('t.id', 't.name', 't.location', 't.departureTime', 't.cuisineId', 't.photoId', 'p.url as photoUrl')
     .first()
-  const ratings = await db('truck_ratings')
+  const ratings = await db('trucks_ratings')
     .where({ id: truck.id })
 
   truck.ratings = ratings
@@ -30,7 +30,7 @@ async function getTruckById(id) {
 }
 
 async function getTruckRatings(truckId) {
-  let ratings = await db('truck_ratings as r')
+  let ratings = await db('trucks_ratings as r')
     .select('id', 'rating')
     .where({ truckId })
   ratings = ratings.map(r => r.rating)
@@ -58,7 +58,7 @@ async function getTruckMenu(id) {
 
 async function addTruckRating(rating) {
   console.log(rating)
-  return await db('truck_ratings')
+  return await db('trucks_ratings')
     .insert(rating)
     .returning('id')
 
