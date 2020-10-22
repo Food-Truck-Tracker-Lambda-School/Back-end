@@ -6,7 +6,7 @@ const geolib = require('geolib')
 
 router.use(require('../../api/restricted-middleware'))
 router.use('/:id', idCheck('id', 'truck', 'trucks', 'id'))
-router.use('/:id/menu/:mId', idCheck('id', 'menuItem', 'menuItems', 'id'))
+router.use('/:id/menu/:mId', idCheck('mId', 'menuItem', 'menuItems', 'id'))
 
 
 

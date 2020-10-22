@@ -6,9 +6,17 @@ async function getOperator(id) {
     .first()
 }
 async function getTruck(id) {
-  return await db('trucks')
+  const truck = await db('trucks')
     .where({ id })
     .first()
+
+
+  const ratings = await db('trucks_ratings')
+    .where({ truckId: id })
+
+  truck.ratings = ratings.map(r => r.rating) || []
+
+  return truck
 }
 async function getMenuItem(id) {
   return await db('menuItems')
@@ -67,6 +75,7 @@ async function addItemToMenu(truckId, menuItem) {
       price: menuItem.price,
       description: menuItem.description
     })
+    .returning('id')
 
   return await getTruckMenu(truckId)
 }
@@ -75,6 +84,22 @@ async function removeItemFromMenu(truckId, menuItemId) {
   return await db('trucks-menuItems')
     .del()
     .where({ truckId, menuItemId })
+}
+
+async function addPhoto(photo) {
+  const exists = await db('photos')
+    .where({ url: photo.url })
+    .first()
+  if (exists) {
+    return exists.id
+  }
+  else {
+    const newPhoto = await db('photos')
+      .insert(photo)
+      .returning('id')
+    return newPhoto[0]
+  }
+
 }
 
 module.exports = {
@@ -87,5 +112,6 @@ module.exports = {
   removeItemFromMenu,
   getOperator,
   getTruck,
-  getMenuItem
+  getMenuItem,
+  addPhoto
 }
