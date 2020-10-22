@@ -29,12 +29,23 @@ router.get('/:id/trucks', async (req, res, next) => {
 
 router.post('/:id/trucks', validateUser, async (req, res, next) => {
   const { id } = req.params
-  const { name, location, cuisineId, photoId = 1, departureTime, ...rest } = req.body
+  let { name, location, cuisineId, photoUrl, photoId = 1, departureTime, ...rest } = req.body
+  if (photoUrl) {
+    const newId = await db.addPhoto({ url: photoUrl, userId: id })
+    photoId = newId
+  }
   if (!isEmpty(rest)) {
     res.status(400).json({ message: 'please only submit a truck with {name, location, cuisineId, photoId, [departureTime]}' })
   }
   else if (name && location && cuisineId !== undefined && photoId) {
     try {
+      req.body = {
+        name,
+        location,
+        cuisineId,
+        photoId,
+        departureTime
+      }
       const trucks = await db.addTruck({ ...req.body, userId: id })
       res.status(201).json(trucks)
     } catch (err) {
@@ -46,9 +57,10 @@ router.post('/:id/trucks', validateUser, async (req, res, next) => {
   }
 })
 
-router.get('/:id/trucks/:tId', (req, res, next) => {
-  if (truck.userId === req.params.id) {
-    res.status(200).json(req.truck)
+router.get('/:id/trucks/:tId', async (req, res, next) => {
+  if (req.truck.userId === parseInt(req.params.id)) {
+    const truck = await db.getTruck(req.truck.id)
+    res.status(200).json(truck)
   }
   else {
     res.status(404).json({ message: `no truck found for user ${req.params.id} with that id` })
@@ -116,8 +128,17 @@ router.post('/:id/trucks/:tId/menu', validateUser, async (req, res, next) => {
       }
 
     }
-    const menu = await db.addItemToMenu(tId, menuItem)
-    res.status(201).json(menu)
+    const oldMenu = await db.getTruckMenu(tId)
+    let found = false
+    oldMenu.forEach(item => item.id === menuItem.id ? found = true : found)
+    if (found) {
+      res.status(400).json({ message: 'that item is already in the menu' })
+    }
+    else {
+      const menu = await db.addItemToMenu(tId, menuItem)
+      res.status(201).json(menu)
+    }
+
   }
   catch (err) {
     next(err)
@@ -127,13 +148,22 @@ router.post('/:id/trucks/:tId/menu', validateUser, async (req, res, next) => {
 router.delete('/:id/trucks/:tId/menu/:mId', validateUser, async (req, res, next) => {
   let { tId, mId } = req.params
   try {
-    const count = await db.removeItemFromMenu(tId, mId)
-    if (count > 0) {
-      res.status(204).end()
+    const oldMenu = await db.getTruckMenu(tId)
+    let found = false
+    oldMenu.forEach(item => item.id === req.menuItem.id ? found = true : found)
+    if (!found) {
+      res.status(404).json({ message: 'that item is not in this truck\'s menu' })
     }
     else {
-      next(`failed to delete mId ${mId} from tId ${tId}`)
+      const count = await db.removeItemFromMenu(tId, mId)
+      if (count > 0) {
+        res.status(204).end()
+      }
+      else {
+        next(`failed to delete mId ${mId} from tId ${tId}`)
+      }
     }
+
   } catch (err) {
     next(err)
   }

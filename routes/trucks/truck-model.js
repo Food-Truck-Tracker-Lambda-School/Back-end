@@ -23,7 +23,7 @@ async function getTruckById(id) {
     .select('t.id', 't.name', 't.location', 't.departureTime', 't.cuisineId', 't.photoId', 'p.url as photoUrl')
     .first()
   const ratings = await db('trucks_ratings')
-    .where({ id: truck.id })
+    .where({ truckId: truck.id })
 
   truck.ratings = ratings
   return truck
@@ -31,7 +31,7 @@ async function getTruckById(id) {
 
 async function getTruckRatings(truckId) {
   let ratings = await db('trucks_ratings as r')
-    .select('id', 'rating')
+    .select('rating')
     .where({ truckId })
   ratings = ratings.map(r => r.rating)
   return ratings

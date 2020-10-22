@@ -642,9 +642,10 @@ Returns all information availible from diner route in a single object
   Axios.post('https://foodtrucktrackers.herokuapp.com/api/operator/1/trucks' , {
     "name": "truck of today",
     "userId": 1,
-    "location": "here",
+    "location": "here",             //optional
     "cuisineId": 0,
-    "photoId": 1,
+    "photoId": 1,                   //optional, overwritten by photoUrl
+    "photoUrl": "http://photo.url"  //optional
   })
 ```
 ##### Response
