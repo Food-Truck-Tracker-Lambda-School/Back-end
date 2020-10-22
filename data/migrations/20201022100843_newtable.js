@@ -18,7 +18,7 @@ exports.up = function (knex) {
 
     tbl.primary('truckId', 'userId')
   })
-    .dropTable('truckRatings')
+    .dropTable('truck-ratings')
 };
 
 exports.down = function (knex) {
