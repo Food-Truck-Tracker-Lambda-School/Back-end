@@ -19,9 +19,12 @@ async function getTruck(id) {
   return truck
 }
 async function getMenuItem(id) {
-  return await db('menuItems')
+  const item = await db('menuItems')
     .where({ id: id })
     .first()
+  item.price = parseFloat(item.price)
+
+  return item
 }
 
 async function getOperatorTrucks(userId) {
@@ -43,7 +46,7 @@ async function addTruck(truck) {
     .returning('id')
 
   console.log(id)
-  return getTruck(id[0])
+  return getOperatorTrucks(truck.userId)
 }
 
 async function editTruck(id, truck) {
@@ -61,10 +64,15 @@ async function delTruck(id) {
 }
 
 async function getTruckMenu(id) {
-  return await db('trucks-menuItems as r')
+  const menu = await db('trucks-menuItems as r')
     .join('menuItems as i', 'r.menuItemId', 'i.id')
     .where({ 'r.truckId': id })
     .select('i.id', 'i.name', 'r.price', 'r.description')
+
+  for (let i = 0; i < menu.length; i++) {
+    menu[i].price = parseFloat(menu[i].price)
+  }
+  return menu
 }
 
 async function addItemToMenu(truckId, menuItem) {
