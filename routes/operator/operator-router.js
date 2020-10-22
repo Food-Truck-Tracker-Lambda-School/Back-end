@@ -103,8 +103,15 @@ router.post('/:id/trucks/:tId/menu', validateUser, async (req, res, next) => {
   const menuItem = req.body
   try {
     if (!menuItem.id) {
-      const newMenuItem = await menuItemDb.addNewMenuItem({ name: menuItem.name })
-      menuItem.id = newMenuItem.id
+      const exists = await menuItemDb.getMenuItemByName(menuItem.name)
+      if (!exists) {
+        const newMenuItem = await menuItemDb.addNewMenuItem({ name: menuItem.name })
+        menuItem.id = newMenuItem.id
+      }
+      else {
+        menuItem.id = exists.id
+      }
+
     }
     const menu = await db.addItemToMenu(tId, menuItem)
     res.status(201).json(menu)
