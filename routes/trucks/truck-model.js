@@ -60,7 +60,7 @@ async function addTruckRating(rating) {
   console.log(rating)
   return await db('trucks_ratings')
     .insert(rating)
-    .returning('id')
+    .returning('rating')
 
 }
 
