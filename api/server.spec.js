@@ -15,6 +15,7 @@ const user = {
 }
 
 const path = require('path')
+const { stat } = require('fs')
 const photo = path.join(__dirname, '../routes/photos/testImg.jpg')
 
 describe('server', () => {
@@ -512,22 +513,90 @@ describe('server', () => {
                 done()
               });
               it('should add a new menu item if the item does not already exist', async done => {
+                const { body } = await request(server)
+                  .post('/api/operator/1/trucks/1/menu')
+                  .set(token)
+                  .send({
+                    name: 'a new menu item',
+                    price: 100,
+                    description: 'very expensive'
+                  })
+
+                expect(body[body.length - 1].name).toMatch('a new menu item')
                 done()
               });
               it('should respond with a 400 if menuItem already exists in the menu', async (done) => {
+                await db('trucks-menuItems')
+                  .truncate()
+                await request(server)
+                  .post('/api/operator/1/trucks/1/menu')
+                  .set(token)
+                  .send({
+                    truckId: 1,
+                    name: 'pizza',
+                    price: 19.99,
+                    description: 'delicious pizza'
+                  })
+
+                const { status } = await request(server)
+                  .post('/api/operator/1/trucks/1/menu')
+                  .set(token)
+                  .send({
+                    truckId: 1,
+                    name: 'pizza',
+                    price: 19.99,
+                    description: 'delicious pizza'
+                  })
+
+                expect(status).toBe(400)
                 done()
               });
             });
 
 
             describe('/:mId', () => {
-              it('should respond with a 404 if given an invalid menuItemId', async (done) => {
-                const { status } = await request(server)
-                  .delete('')
-                  .set(token)
-                  .send()
+              beforeAll(async done => {
+                await db('trucks-menuItems')
+                  .truncate()
+                await db('trucks')
+                  .truncate()
+                await db('menuItems')
+                  .truncate()
+
+                await db('trucks')
+                  .insert(truck)
+                await db('menuItems')
+                  .insert({
+                    name: "pizza",
+                    id: 1
+                  })
+                await db('trucks-menuItems')
+                  .insert({
+                    truckId: 1,
+                    menuItemId: 1,
+                    price: 100,
+                    description: 'delicious pizza'
+                  })
+
                 done()
               });
+              it('should respond with a 404 if given an menuItem that isn\'t in the menu', async (done) => {
+
+                const { status } = await request(server)
+                  .delete('/api/operator/1/trucks/1/menu/10')
+                  .set(token)
+                expect(status)
+                  .toBe(404)
+                done()
+              });
+              it('should respond with a 204 if given a valid menuItemId to delete', async done => {
+                const { status } = await request(server)
+                  .delete('/api/operator/1/trucks/1/menu/1')
+                  .set(token)
+
+                expect(status).toBe(204)
+                done()
+              })
 
             });
           });
@@ -553,45 +622,222 @@ describe('server', () => {
   });
 
   describe('truck router', () => {
+    beforeAll(async done => {
+      await db('users').truncate()
+      const { body } = await register('merry', 'pippen', 1)
+      token = { Authorization: `bearer ${body.token}` }
+      await db('trucks')
+        .truncate()
+      await db('trucks')
+        .insert(truck)
+      done()
+    });
     it('should reject any request without an authorization header', async (done) => {
+      const { status } = await request(server)
+        .get('/api/trucks')
+
+      expect(status).toBe(403)
       done()
     });
     describe('/', () => {
+
       it('should provide a list of trucks', async (done) => {
+        const { body } = await request(server)
+          .get('/api/trucks')
+          .set(token)
+
+        expect(body).toHaveLength(1)
         done()
       });
       it('should only show trucks within a certain distance when queried', async (done) => {
+        db('trucks')
+          .insert({
+            "id": 3,
+            "name": "Taqueria Sinaloa",
+            "location": "37.785116 -122.237974",
+            "departureTime": null,
+            "cuisineId": 6,
+            "photoId": 1,
+          })
+        const { body } = await request(server)
+          .get('/api/trucks')
+          .query({
+            latitude: 37.770147,
+            longitude: -122.261033,
+            range: 2
+          })
+          .set(token)
+
+        expect(body).toHaveLength(1)
         done()
       });
       describe('/:id', () => {
+        beforeAll(async done => {
+          db('trucks')
+            .truncate()
+          db('trucks')
+            .insert(truck)
+          done()
+        });
         it('should return a specified truck when given an id', async (done) => {
+          const { body } = await request(server)
+            .get('/api/trucks/1')
+            .set(token)
+
+          expect(body.id).toBe(1)
           done()
         });
         it('should respond with a 404 when given an invalid id', async (done) => {
+          const { status } = await request(server)
+            .get('/api/trucks/2')
+            .set(token)
+
+          expect(status).toBe(404)
           done()
         });
         describe('/ratings', () => {
           describe('GET', () => {
+            beforeAll(async done => {
+
+              await db('trucks_ratings')
+                .truncate()
+              await db('trucks')
+                .truncate()
+              await db('trucks')
+                .insert(truck)
+              await db('trucks_ratings')
+                .insert({
+                  truckId: 1,
+                  userId: 1,
+                  rating: 5
+                })
+              done()
+            });
             it('should give all ratings for a specified truck', async (done) => {
+              const { body } = await request(server)
+                .get('/api/trucks/1/ratings')
+                .set(token)
+
+              expect(body).toHaveLength(1)
               done()
             });
           });
           describe('POST', () => {
+            it('should return a 404 for any call made to a truck that doesn\'t exist', async done => {
+              const { status } = await request(server)
+                .post('/api/trucks/3/ratings')
+                .set(token)
+                .send({
+                  userId: 1,
+                  rating: 5
+                })
+              expect(status).toBe(404)
+              done()
+            });
 
+            it('should return a 400 for a missing userId or rating', async done => {
+              const { status } = await request(server)
+                .post('/api/trucks/1/ratings')
+                .set(token)
+                .send({
+                  rating: 5
+                })
+              expect(status).toBe(400)
+              done()
+            });
+            it('should return a rating and a truckId on a successful call', async done => {
+              done()
+            });
           });
         });
         describe('menu', () => {
           describe('GET', () => {
-
+            it('should return a 404 for an invalid truck', async done => {
+              done()
+            });
+            it('should return an array of menu items', async done => {
+              done()
+            });
           });
           describe('/:mId', () => {
+            beforeAll(async done => {
+              await db('menuItemRatings')
+                .truncate()
+              await db('trucks-menuItems')
+                .truncate()
+              await db('menuItems')
+                .truncate()
+              await db('trucks')
+                .truncate()
+              await db('trucks')
+                .insert(truck)
 
+              await db('menuItems')
+                .insert({
+                  id: 1,
+                  name: 'pizza'
+                })
+              await db('menuItems')
+                .insert({
+                  id: 2,
+                  name: 'tacos'
+                })
+              await db('trucks-menuItems')
+                .insert({
+                  truckId: 1,
+                  menuItemId: 1,
+                  price: 19.99,
+                  description: 'it\'s pizza!'
+                })
+              done()
+            });
+            it('should return a 404 if the menu item is not in the truck', async done => {
+              const { status } = await request(server)
+                .post('/api/trucks/1/menu/2')
+                .set(token)
+                .send({
+                  userId: 1,
+                  rating: 5
+                })
+              expect(status)
+                .toBe(404)
+              done()
+            });
+            it('should return an object containing a rating', async done => {
+              const { body } = await request(server)
+                .post('/api/trucks/1/menu/1')
+                .set(token)
+                .send({
+                  userId: 1,
+                  rating: 5
+                })
+              expect(body.rating).toBe(5)
+              done()
+            });
           });
         });
       });
     });
   });
-
+  afterAll(async done => {
+    await db('users')
+      .truncate()
+    await db('trucks_ratings')
+      .truncate()
+    await db('trucks-menuItems')
+      .truncate()
+    await db('menuItems-photos')
+      .truncate()
+    await db('menuItems')
+      .truncate()
+    await db('menuItemRatings')
+      .truncate()
+    await db('favorites')
+      .truncate()
+    await db('errors')
+      .truncate()
+    done()
+  });
 
 });
 

@@ -65,6 +65,12 @@ async function addTruckRating(rating) {
 
 }
 
+async function getMenuItemInTruck(menuItemId, truckId) {
+  return await db('trucks-menuItems')
+    .where({ truckId, menuItemId })
+    .first()
+}
+
 async function addMenuItemRating(rating) {
   return await db('menuItemRatings')
     .insert(rating)
@@ -77,5 +83,6 @@ module.exports = {
   getTruckRatings,
   getTruckMenu,
   addTruckRating,
-  addMenuItemRating
+  addMenuItemRating,
+  getMenuItemInTruck
 }
