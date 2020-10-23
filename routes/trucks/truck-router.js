@@ -72,6 +72,9 @@ router.post('/:id/ratings', async (req, res, next) => {
         res.status(201).json({ rating, truckId: id })
       }
     }
+    else {
+      res.status(400).json({ message: 'please send a userId and a rating' })
+    }
   }
   catch (err) {
     next(err)
@@ -99,8 +102,15 @@ router.post('/:id/menu/:mId', async (req, res, next) => {
       rating,
       userId
     }
-    const success = await db.addMenuItemRating(menuRating)
-    res.status(201).json(menuRating)
+    const exists = await db.getMenuItemInTruck(mId, id)
+    if (exists) {
+      const success = await db.addMenuItemRating(menuRating)
+      res.status(201).json(menuRating)
+    }
+    else {
+      res.status(404).json({ message: 'that menuItem does not exist in that truck' })
+    }
+
   } catch (err) {
     next(err)
 
