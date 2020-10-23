@@ -83,7 +83,7 @@ async function addItemToMenu(truckId, menuItem) {
       price: menuItem.price,
       description: menuItem.description
     })
-    .returning('id')
+    .returning('menuItemId')
 
   return await getTruckMenu(truckId)
 }
