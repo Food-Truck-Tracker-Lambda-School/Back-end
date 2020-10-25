@@ -27,6 +27,13 @@ async function getMenuItem(id) {
   return item
 }
 
+async function getPhotoByUrl(url) {
+  return await db('photos')
+    .where({ url })
+    .first()
+
+}
+
 async function getOperatorTrucks(userId) {
   const trucks = await db('trucks')
     .where({ userId })

@@ -70,12 +70,16 @@ router.get('/:id/trucks/:tId', async (req, res, next) => {
 router.put('/:id/trucks/:tId', validateUser, async (req, res, next) => {
   const { tId } = req.params
   const truck = { ...req.truck, ...req.body }
-  const { name, location, cuisineId, photoId, departureTime, id, userId, ...rest } = truck
+  const { name, location, cuisineId, photoId, departureTime, id, userId, photoUrl, ...rest } = truck
   if (!isEmpty(rest)) {
     res.status(400).json({ message: 'please only submit a truck with {name, location, cuisineId, photoId, [departureTime]}' })
   }
   else {
     try {
+      if (photoUrl) {
+        const photo = await db.getPhotoByUrl(photoUrl)
+        truck.photoId = photo.id
+      }
       const adjustedTruck = await db.editTruck(tId, truck)
       res.status(200).json(adjustedTruck)
     } catch (err) {

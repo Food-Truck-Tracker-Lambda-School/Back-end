@@ -10,9 +10,6 @@ const truck = {
   cuisineId: 5,
   photoId: 1
 }
-const user = {
-  username: "merry"
-}
 
 const path = require('path')
 const { stat } = require('fs')
@@ -841,8 +838,6 @@ describe('server', () => {
 
 });
 
-
-
 async function register(username, password, roleId) {
   return await request(server)
     .post('/api/auth/register')
@@ -852,7 +847,6 @@ async function register(username, password, roleId) {
       roleId
     })
 }
-
 async function login(username, password) {
   return await request(server)
     .post('/api/auth/login')

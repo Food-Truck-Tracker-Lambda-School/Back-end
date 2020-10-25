@@ -9,6 +9,7 @@ const error = require('./server-error-middleware')
 const server = express()
 
 server.use(express.json())
+server.use(require('express-fileupload')())
 server.use(helmet())
 server.use(cors())
 
