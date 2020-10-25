@@ -58,10 +58,27 @@ async function getTruckMenu(id) {
 }
 
 async function addTruckRating(rating) {
-  console.log(rating)
-  return await db('trucks_ratings')
-    .insert(rating)
-    .returning('rating')
+  try {
+    console.log(rating)
+    const exists = await db('trucks_ratings')
+      .where({ userId: rating.userId, truckId: rating.truckId })
+      .first()
+    if (exists) {
+      return await db('trucks_ratings')
+        .update(rating)
+        .where({ userId: rating.userId })
+
+    }
+    else {
+      return await db('trucks_ratings')
+        .insert(rating)
+        .returning('rating')
+
+    }
+  } catch (error) {
+    console.log(error)
+  }
+
 
 }
 

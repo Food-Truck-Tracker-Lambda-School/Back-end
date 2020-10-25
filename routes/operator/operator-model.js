@@ -128,5 +128,6 @@ module.exports = {
   getOperator,
   getTruck,
   getMenuItem,
-  addPhoto
+  addPhoto,
+  getPhotoByUrl
 }

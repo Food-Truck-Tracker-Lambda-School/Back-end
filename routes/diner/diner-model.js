@@ -6,6 +6,7 @@ async function getDinerFavorites(id) {
     .join('trucks as t', 't.id', 'f.truckId')
     .join('photos as p', 't.photoId', 'p.id')
     .where({ 'f.userId': id })
+    .select('t.*', 't.id as id', 'p.url as photoUrl')
   //.select('t.id', 't.name', 't.location', 't.departureTime', 't.cuisineId', 't.photoId', 'p.url as photoUrl')
   return favorites
 }
